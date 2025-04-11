@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赠冉龙雨</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>	
+		:root {
+			--primary: #ff4d6d;
+			--light-primary: #f56b84;
+			--secondary: #6930c3;
+			--light-secondary: #9c73dd;
+			--dark: #212529;
+			--light: #f8f9fa;
+			--accent: #38b000;
+			--info: #00b4d8;
+		}
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+		
+		body {
+			background: var(--dark);
+			color: var(--dark);
+			line-height: 1.6;
+			padding-bottom: 60px;
+			overflow-x: hidden;
+			background-image: 
+				radial-gradient(circle at 75% 30%, rgba(108, 92, 231, 0.15) 0%, transparent 30%),
+				radial-gradient(circle at 25% 70%, rgba(0, 206, 255, 0.15) 0%, transparent 30%);
+		}
+
+		/* 添加网格背景 */
+		body::before {
+			content: '';
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-image: 
+				linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+			background-size: 20px 20px;
+			z-index: -1;
+		}
+        
+		.head-container {
+			margin-top: 70px; 
+			max-width: 100%;
+            padding: 0 20px;
+			z-index: 0; 
+		}
+		
+        .container {
+			margin-top: 0px; 
+			max-width: 100%;
+            padding: 0 20px;
+			z-index: 0; 
+		}
+		
+		#particles-canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			pointer-events: none;
+		}
+		
+		.particles-header-only {
+			position: fixed;
+			top: 0;
+			height: 125px !important; /* 与header高度匹配 */
+			overflow: hidden;
+			pointer-events: none;
+		}
+		
+		#splash-screen {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100vh;
+			background: linear-gradient(135deg, var(--primary), var(--secondary));
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 1000;
+			transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+			border-radius: 0;
+		}
+		
+		#splash-content, #header-content {
+			text-align: center;
+			width: 100%;
+		}
+
+		#splash-content {
+			text-align: center;
+			position: relative;
+			z-index: 2;
+			transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+			color: white; /* 添加白色文字 */
+		}
+		
+		#receive-btn {
+			margin-top: 30px;
+			background: rgba(255,255,255,0.2);
+			backdrop-filter: blur(5px);
+			color: white;
+			border: 2px solid rgba(255,255,255,0.3);
+			padding: 12px 30px;
+			border-radius: 50px;
+			font-size: 1.1rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+		
+		#receive-btn:active {
+			transform: scale(0.95);
+		}
+		
+		/* 主内容区域 */
+		.main-content {
+			margin-top: 150px;
+			opacity: 0;
+			transition: opacity 0.3s ease; 
+		}
+		
+		.tab-section:first-child {
+			margin-top: 0;
+			padding-top: 10px;
+		}
+		
+		.magazine-section:first-child {
+			margin-top: 0;
+			padding-top: 10px;
+		}
+
+		.main-content.visible {
+			opacity: 1;
+		}
+
+		/* 调整header样式 */
+			header {
+				background: linear-gradient(135deg, var(--primary), var(--secondary));
+				color: white;
+				padding: 30px 20px; /* 增加内边距 */
+				text-align: center;
+				position: fixed;
+				height: 100px;
+				top: 0;
+				left: 0;
+				width: 100%;
+				z-index: 100;
+				opacity: 1; /* 始终可见 */
+				border-radius: 20px 20px 20px 20px; /* 增大圆角 */
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 添加阴影 */
+				height: auto; /* 自动高度 */
+				margin-bottom: 0px; /* 添加底部外边距 */
+			}
+		
+		header h1,
+		header .subtitle {
+		    margin-bottom: 5px !important;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+			position: absolute;
+			width: 100%;
+			text-align: center;
+		}
+		
+		header.visible {
+			opacity: 1;
+		}
+		
+		/* 初始隐藏滚动条 */
+		body {
+			overflow: hidden;
+		}
+		
+		body.scroll-enabled {
+			overflow: auto;
+		}
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tab-section {
+            background: #f5f5f7;
+            border-radius: 15px; /* 15 */
+            padding-left: 8px;/* 25 */
+            padding-right: 8px;
+            padding-bottom: 0px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+		
+        .magazine-section {
+            background: #f5f5f7;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: 70%;
+            width: 5px;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+		/* 改进的滚动动画样式 */
+		.scroll-animate {
+			opacity: 0;
+			transform: translateY(30px);
+			transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+		}
+		
+		.scroll-animate.in-view {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		.scroll-animate.out-view {
+			opacity: 0;
+			transform: translateY(-30px);
+			transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+		}
+		
+		.component-card {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+		
+		.component-card:active, .term-card:active {
+			transform: scale(0.98) !important;
+		}
+		
+        .component-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .analogy {
+            background: rgba(105, 48, 195, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .analogy-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .term-card {
+            background: #f5f5f7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .term-title {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #eee;
+        }
+		
+        .comparison-table th {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .stresslight {
+            color: #D81E06;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .noun {
+            color: #1CBFFB;
+            font-weight: 500;
+        }
+        
+        .laptop-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .laptop-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .laptop-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .laptop-info {
+            padding: 20px;
+        }
+        
+        .laptop-name {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .laptop-specs {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .spec-item {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .spec-icon {
+            margin-right: 8px;
+            color: var(--info);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .price-tag {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+		
+        /* 常见问题卡片样式 */
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #eee;
+        }
+        
+        /* 问题标题样式 */
+        .question-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            padding-right: 30px; 
+        }
+        
+        /* 下拉图标样式 */
+        .dropdown-icon {
+            position: absolute;
+            right: 15px;
+            top: 20px;
+            font-size: 1.2rem;
+            color: #666;
+            transition: transform 0.5s ease;
+        }
+        
+        /* 答案容器样式 - 初始隐藏 */
+        .answer-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8f9fa;
+            border-radius: 0 0 12px 12px;
+            margin: 15px -15px -15px -15px;
+            background: #f0f0f3;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        /* 答案内容样式 */
+        .answer-content {
+            padding: 0 15px 15px 15px;
+            color: #555;
+        }
+        
+            /* 展开状态样式 */
+        .question-card.expanded {
+            background: #C2C2C2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .question-card.expanded .dropdown-icon {
+            transform: rotate(90deg);
+        }
+        
+        .question-card.expanded .answer-container {
+            max-height: 500px; /* 足够大的值容纳内容 */
+        }
+        
+		.tabs {
+			display: flex;
+			margin-bottom: 20px;
+			border-bottom: 2px solid #eee;
+			position: relative;
+			white-space: nowrap; /* 禁止换行 */
+		}
+        
+        .tab {
+            padding: 5px 5px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+            transition: all 0.3s ease;
+            z-index: 1;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-indicator {
+            position: absolute;
+            bottom: -2px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .tab-content {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease, height 0.3s ease;
+        }
+        
+        .tab-content.active {
+            opacity: 1;
+            height: auto;
+            overflow: visible;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+			background: linear-gradient(135deg, var(--light-primary), var(--light-secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f3f3f3, #e0e0e0);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+		
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+		.video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0; /* 去除视频之间的间隙 */
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        video {
+            width: 100%;
+            display: block;
+        }
+		
+        .system-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f3f3f3, #e0e0e0);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+		
+        .system-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+		
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .component-title, .laptop-name {
+                font-size: 1.1rem;
+            }
+            
+            .magazine-section {
+                padding: 20px 15px;
+            }
+        }
+		
+        .FPS-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 2px;
+        }
+
+        /* 动画轨道样式（宽度改为百分比适配） */
+        .track {
+            position: relative;
+            width: 100%;
+            height: 15px;
+            border-bottom: 2px solid #ccc;
+            margin: 0 auto;
+        }
+
+        /* 黑点基础样式 */
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            top: 2px;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+	<div id="splash-screen">
+		<div id="splash-content">
+			<h1>Laptop</h1>
+			<div class="subtitle">李均劭 赠 冉龙雨</div>
+			<button id="receive-btn">
+				<span>拆封</span>
+			</button>
+		</div>
+		<canvas id="particles-canvas"></canvas>
+	</div>
+
+	<header id="mainHeader">
+		<div class="head-container"> <!-- 添加container保持内容宽度一致 -->
+			<h1>Laptop</h1>
+			<div class="subtitle">李均劭 赠 冉龙雨</div>
+		</div>
+	</header>
+	    
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+	<div class="main-content" id="mainContent">
+		<div class="container">
+			<div class="magazine-section">
+				<h2 class="section-title">引言</h2>
+				<p>电脑是一个与手机在操作方式上大相径庭的电子产品，你将要面对的是一个全新的体系，所以你需要做好准备。</p>
+				<br>
+				<p>在购买笔记本电脑之前，你还得了解一些电脑相关的信息，才能更加清楚应该如何选购笔记本电脑。</p>
+				<br>
+				<p>下面，我给你介绍一下电脑内部的电子部件，以及电脑相关的专有名词，这有助于你建成体系。</p>
+			</div>
+		</div>
+		
+		<div class="container">
+			<div class="tab-section">
+				<div class="tabs">
+					<div class="tab active" data-tab="electronic-component">电子部件</div>
+					<div class="tab" data-tab="proper-noun">专有名词</div>
+					<div class="tab" data-tab="recommended-laptops">电脑推荐</div>
+					<div class="tab" data-tab="common-questions">常见问题</div>
+				</div>
+			</div>
+			
+			<div class="tab-content active" id="electronic-component">
+				<div class="magazine-section">
+				
+					<div class="image-placeholder">
+						<img src="https://pic1.imgdb.cn/item/67ef65970ba3d5a1d7ecbcfb.png" alt="mindmap">
+					</div>
+					
+					<div class="component-card">
+						<h3 class="component-title">CPU - 中央处理器</h3>
+						<p>CPU用于处理各个软件的常规运行，<span class="highlight">它决定电脑的任务处理速度和复杂问题的解决能力。</span></p>
+						<div class="analogy">
+							<p>若将一部电脑比喻成一个团结协作的团队，CPU即是团队中的决策者和领导者，负责决策团队的活动，领导者（CPU）越"聪明"，越能快速分析办公桌（内存）上的资料（文件）并安排任务（处理各软件的运行），但若领导者反应慢，团队时常会卡在开会讨论（CPU计算瓶颈）之中，而无法继续推进项目（如打开大型软件较慢、切换软件的时候有延迟），<span class="highlight">所以CPU将是等会儿选购笔记本的重要因素之一</span>。</p>
+						</div>
+						<div class="image-placeholder">
+							<img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.-Z3nqnFE5LBWyBCGe-7tuQHaEK?w=305&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="CPU示意图">
+						</div>
+					</div>
+				
+					<div class="component-card">
+						<h3 class="component-title">GPU（显卡） - 图形处理器</h3>
+						<p>GPU用于渲染屏幕画面，<span class="highlight">它决定电脑的图形处理速度和画面流畅度</span>。</p>
+						<div class="analogy">
+							<p>沿用以上例子，GPU即是团队中的设计师，负责绘制图像（渲染屏幕画面）给用户（电脑使用者）观看，专业的设计师（高性能GPU）能更快速地绘制图像、进行3D建模，普通的设计师（低性能GPU）在绘制图像时更缓慢（如游戏时FPS较低），<span class="highlight">GPU同样是等会儿选购笔记本的重要因素之一</span>。</p>
+						</div>
+						<div class="image-placeholder">
+							<img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="GPU示意图">
+						</div>
+					</div>
+				
+					<div class="component-card">
+						<h3 class="component-title">内存 (RAM) - 文件临时存放处</h3>
+						<p>内存是便于CPU快速访问数据的硬件，<span class="highlight">它决定电脑能同时处理多少任务以及运行多少软件</span>。</p>
+						<div class="analogy">
+							<p>沿用以上例子，内存是团队的办公桌，办公桌面积越大，能放在桌子上的文件资料（数据）越多，可供领导者（CPU）同时使用的文件越多（当然，也要领导者足够"聪明"，才能同时分析很多的文件），倘若桌子太小，领导者则要频繁跑到文件柜（硬盘）里翻找文件（如在开启多个软件后卡顿）。<span class="highlight">对你来说，16GB的内存刚好合适</span>。</p>
+						</div>
+						<div class="image-placeholder">
+							<img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.5k0co_nG1RhOZfeoqY49UQHaHa?w=177&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="内存示意图">
+						</div>
+					</div>
+					
+					<div class="component-card">
+						<h3 class="component-title">硬盘 - 文件长期存放处</h3>
+						<p>硬盘是电脑长期存放文件的地方，用于保存你的游戏，软件等等各种各样的文件，<span class="highlight">它决定了数据载入和保存的快慢</span>。</p>
+						<div class="analogy">
+							<p>沿用以上例子，硬盘是团队的文件柜，专门存放资料或档案（电脑中的文件），文件柜体积越大或越小，对电脑的影响自不必多说，这决定了你能放多少东西；另一方面，若你的文件柜越智能（硬盘读写速率越高），翻找资料的速度就越快，能更快地将文件放到办公桌（内存）上，而你的文件柜越低端，翻找文件速度就越慢（如开机慢、软件启动较久、游戏加载时间较长）。</p>
+						</div>
+						<div class="image-placeholder">
+							<img src="https://tse1-mm.cn.bing.net/th/id/OIP-C.6U9ss7KkkzTLdGPip9_gQgHaFj?w=267&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="硬盘示意图">
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="tab-content" id="proper-noun">
+				<div class="magazine-section">
+					<p>你可能不知道上一页的"FPS"是什么意思，那么接下来介绍诸如"FPS"这样的计算机<span class="highlight">专有名词</span></p>
+					<br>
+					<p>实际上，这一页不仅是为了介绍专有名词，也是为了普及一些基本常识
+					
+					<div class="term-card">
+						<h3 class="term-title">刷新率与FPS</h3>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>刷新率：这是笔记本电脑的屏幕的其中一个参数，<span class="highlight">它决定了你的屏幕每秒最多可以显示多少张画面</span>，单位是Hz，如144Hz即每秒最多显示144张画面</li>
+							<li>FPS：即帧率，<span class="highlight">该数值是软件每秒生成的画面数</span>，它决定了你的屏幕每秒输出多少张软件画面，单位是FPS（即frame per second - 帧/秒），如120FPS，即120帧，就是每秒刷新120次画面</li>
+						</ul>
+						<p>看上去刷新率和帧率的定义好像差不多，那么他们具体有什么区别呢？</p>
+						<table class="comparison-table">
+							<tr>
+								<th></th>
+								<th>刷新率(Hz)</th>
+								<th>FPS(帧率)</th>
+							</tr>
+							<tr>
+								<td>本质</td>
+								<td>屏幕的硬件参数</td>
+								<td>软件的实际输出画面速率</td>
+							</tr>
+							<tr>
+								<td>决定因素</td>
+								<td>屏幕本身</td>
+								<td>GPU性能及软件优化</td>
+							</tr>
+							<tr>
+								<td>上限</td>
+								<td>固定值</td>
+								<td>理论无上限</td>
+							</tr>
+							<tr>
+								<td>感知效果</td>
+								<td>滚动网页、鼠标移动等操作的流畅度</td>
+								<td>游戏、视频的流畅度与连贯性</td>
+							</tr>
+						</table>	
+						<p>可以看出，<span class="highlight">高刷新率只是让高帧率的潜力被充分利用，实际流畅度还是由帧率决定</span></p>
+						<br>
+						<p>值得一提的是，GPU性能越强，一秒内能渲染出的画面数越多，帧率也就越高，游戏画面越流畅，反之则越卡顿</p>
+						<br>
+						<p>以下分别是15帧、30帧以及60帧的效果演示</p>
+						<div class="FPS-container">
+							<div class="track" id="track15">
+								<div class="dot"></div>
+							</div>
+							<div class="track" id="track30">
+								<div class="dot"></div>
+							</div>
+							<div class="track" id="track60">
+								<div class="dot"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">像素（Pixel）</h3>
+						<p>像素是图像的最小单位，可以理解为一个个小色块，每个像素显示一种颜色，多个像素组合起来便形成了完整的画面</p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">分辨率</h3>
+						<p>分辨率指的是屏幕的像素数量，通常用横向像素数 × 纵向像素数表示，例如1920*1080＝横向1920像素*纵向1080像素＝总共207万像素，以下是分辨率常见标准：</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>720p (1280×720) - 入门级清晰度，常见于旧设备</li>
+							<li>1080p (1920×1080) - 全高清，是主流电脑及电视标准</li>
+							<li>2K (2560×1440) - 比1080p更细腻</li>
+							<li>4K (3840×2160) - 超高清，细节丰富，适合专业设计及影视</li>
+						</ul>
+						<p>分辨率越高，GPU在每一帧需要渲染的像素数量越多，对GPU性能要求也就越高，相同性能的GPU，在2K屏上输出的帧率比在4K屏上高得多</p>
+						<br>
+						<p>综上所述，屏幕分辨率的选择与GPU的选择通常要相对应，一般不会拿一个性能较低的GPU去搭配4K屏幕，也不会拿一个性能很高的GPU去搭配1080p屏幕</p>
+						<br>
+						<p>你也许会在“屏幕分辨率和GPU如何搭配”上一头雾水，不过，好在笔记本电脑是整机卖出的，也就是说，屏幕和GPU是厂家已经给你搭配好来卖给你的，在此方面就不用过多苦恼了。顺带一提，<span class="highlight">游戏本常用的是2k分辨率</span></p>
+					</div>
+				
+					<div class="term-card">
+						<h3 class="term-title">轻薄本/游戏本/全能本</h3>
+						<p>这是笔记本的不同分类</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>轻薄本注重轻薄便捷，适于日常使用</li>
+							<li>游戏本注重更高性能，适于游戏使用</li>
+							<li>全能本介于轻薄本和游戏本之间</li>
+						</ul>
+						<p><span class="highlight">咱无脑游戏本就行哈</span></p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">操作系统</h3>
+						<p>操作系统是你在使用电脑时用于管理硬件和软件的基础平台，这里给你举两个例子：</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>国产手机常用Android（安卓）操作系统，当然，各大国内厂商多年来逐渐在Android的基础上进行改进以衍生出了许多不同的操作系统（如鸿蒙OS、Color OS、Origin OS、Realme UI）</li>
+							<li>Apple手机用的操作系统则是iOS</li>
+						</ul>
+						<p>电脑最常见的操作系统是Windows，而Windows中又以win10和win11最为常见，<span class="highlight">你到时候也大概率将会使用win10或win11作为笔记本电脑的系统</span></p>
+						<div class="system-image">
+							<img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.GjN30d8aATinlSiKmMdArAAAAA?w=297&h=135&c=7&r=0&o=5&dpr=1.5&pid=1.7",alt="windows">
+						</div>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">硬盘分区</h3>
+						<p>意为将硬盘划分为多个逻辑部分，假如你的电脑硬盘是一个大仓库，硬盘分区就是将这个大仓库划分为多个独立的小房间，这对电脑来说没什么性能提升，仅<span class="highlight">方便于用户在不同分区存放不同类型的文件</span>，就像家里不同的房间有不同的用途</p>
+						<br>
+						<p>在手机的存储空间中通常是没有分区的，电脑则可以通过也必须通过分区来管理文件。系统的默认分区只有"C盘"，可以自己进行分区，分为"D盘"、"E盘"等（C盘、D盘、E盘是分区的名称，后面若还有分区，则按字母顺序类推，不用问为什么没有A盘B盘）</p>
+					</div>
+				
+					<div class="term-card">
+						<h3 class="term-title">快捷键</h3>
+						<p>快捷键指的是键盘组合键，同时按住键盘上的多个按键来使用一些快速功能，常见如Ctrl + C复制，Ctrl + V粘贴，以下列出常用的快捷键（不用背）：</p>
+						<ul style="margin-left: 20px; margin-top: 10px;">
+							<li>Win + R - 打开运行对话框</li>
+							<li>Win + D - 回到桌面（类似于手机最下方三个快捷按键中的返回主界面）</li>
+							<li><span class="highlight">Ctrl + C</span> - 复制</li>
+							<li><span class="highlight">Ctrl + V</span> - 粘贴</li>
+							<li>Ctrl + S - 保存</li>
+							<li>Alt + F4 - 强制关闭当前应用</li>
+							<li>Alt + Tab - 在已打开的应用间切换</li>
+						</ul>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件</h3>
+						<p><span class="stresslight">对电脑上“文件”体系的感知非常重要，是学会使用电脑的必修一课，接下来请确保自己理解“文件实质”、“文件路径”、“文件格式”、“文件的打开方式”以及“文件的分级管理”五个板块</span></p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件实质</h3>
+						<p>你肯定知道“文件”是什么意思，那么为什么还要将这个概念单独拎出来讲呢？在使用手机的过程中，用户虽然也是在与文件打交道，但手机的傻瓜式设计让常年使用手机的用户并不能真正理解到“文件”的实质。那么，文件的实质究竟是什么？这里进行对比讨论便于理解</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+						    <li>手机：你拍的照片在「相册」里，下载的音乐在「音乐App」里，系统自动帮你分类好了不同的文件类型，你很少需要主动找文件本身。<span class="highlight">或许你以为“照片”就是相册里的那张图？其实它本质是一个存储在手机里的图片文件</span>（例如 IMG_001.jpg）</li>
+						    <li>电脑：所有内容，包括文档、图片、视频、软件等，都是以独立文件的形式存在（其实手机也是如此，但手机上你不用找那些独立文件），你需要找到文件本身在哪里。这个时候，你的“照片”是作为一个文件存放在电脑的指定路径内的，<span class="highlight">需要你自己通过文件路径找到文件在哪里</span></li>
+						</ul>
+						<p>电脑里的文件就像图书馆的书，每本书（文件）有固定的位置（文件路径），而手机是自动送货上门，你可以直接看到文件内容，而不用管文件放在哪</p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件路径</h3>
+						<p>其实手机和电脑都一样，<span class="highlight">每个文件都有自己的坐标位置，这个坐标位置的表现形式是一条路线，这条路线叫做“文件路径”</span>。不过，在手机和电脑上，用户对“文件路径”的感知并不相同：</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>手机：手机用户对于“文件路径”的感知几乎没有。例如，“图库”/“相册”这类APP将手机里的所有图片、视频文件搜索出来，并且显示给用户看，因此，用户在使用过程中几乎不需要知道文件实际在哪个位置</li>
+							<li>电脑：电脑上没有“图库”/“相册”这样的软件，所有文件存放在电脑里，<span class="highlight">若你需要调用，则要自己找到文件在哪里</span>。以下是一个路径示例：“C:\Users\admin\Laptop.html”，意思是C盘中一个叫Users的文件夹，而Users文件夹中又有一个叫admin的文件夹，这个路径所指向的目标文件就处在admin文件夹中，名字叫“Laptop.html”</li>
+						</ul>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件格式</h3>
+						<p>很容易注意到，此前的叙述中出现了两个文件例名：“IMG_001.jpg”以及“Laptop.html”。在这两个例子中，IMG_001和Laptop都是文件的名字，“.”是一个分隔用的标识符，后面的“jpg”和“html”则是文件的后缀名（又称扩展名），<span class="highlight">文件扩展名显示了这个文件使用的文件格式</span></p>
+						<br>
+						<p>文件格式的作用很简单，它将文件分为不同的类别，一方面告诉电脑，这个文件是做什么用的，应该用什么软件来打开，另一方面也告诉用户，这个文件里面是图片、视频、音频还是文本，又或者是其他的什么内容</p>
+						<br>
+						<p>文件格式的本质是数据与规则的约定，对人来说，文件格式旨在确保内容被正确地显示出来给人看；对计算机来说，文件格式用来确保数据能用正确的方式解析和处理</p>
+						<br>
+						<p>以下列举一些常见的文件扩展名：</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li>图片：jpg（等于jpeg），png,gif（动图），ico（图标文件）</li>
+							<li>视频：mp4，mkv，avi</li>
+							<li>音频：mp3，wav，flac</li>
+							<li>压缩包：zip，rar，tar，7z</li>
+							<li>其他：txt（纯文本），pptx（幻灯片，上课用的ppt就是这个格式），docx（word文档），xlsx（表格，情侣账单就是这个格式），exe（可执行文件），html（网页文件，你现在看着的这个文件就是使用的html）</li>
+						</ul>
+						<p>特别说明：文件扩展名的作用注定了<span class="highlight">它不能被随意更改</span>，因此，为照顾小白用户，windows系统初始设置不显示文件扩展名，若要显示文件扩展名需要自己设置。我推荐还是设置一下，只要自己注意重命名文件的时候不要把扩展名（包括那个“.”）删掉，也不要乱改扩展名就可以了</p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件的打开方式</h3>
+						<p>我们已经知道，正常情况下每个文件都会带有文件扩展名，不同扩展名对应不同格式，不同格式的文件又需要不同软件来解析并使用，那么，文件总需要一个软件来打开它才能正常使用的</p>
+						<br>
+						<p>还是以“相册”举例，相册本质上是一个图片文件与视频文件的管理器与播放器。其在文件管理方面发挥的作用在“文件路径”板块已有提及，这里着重说明“播放器”方面，“相册”软件有内置的用于解码图片和视频的解码方式，所以你才能在相册里浏览图片和视频，这也说明了一点：同样可以有其他的软件，带有浏览图片，视频，音频等等文件的功能，选择一个功能全面，效果优良的视频播放器就可以带来更好的观看体验，例如：一个播放器只可以暂停或开始，没有其他功能，另一个播放器却可以调节视频倍速，使用另一个播放器便可以有更好的体验</p>
+						<br>
+						<p>这个例子中，就是用软件（相册）打开了文件（图片/视频），举一反三，其他类型的文件也可以由不同的软件来打开/播放/更改，也就是说，<span class="highlight">一个文件可能有多种打开方式</span></p>
+						<br>
+						<p>特别说明：只有用于播放图片、视频和音频之类文件的软件或软件内置的一项功能会被称为“播放器”，其他诸如使用浏览器打开html文件，使用压缩软件打开/解压压缩包，这其中的浏览器和压缩软件都不被叫做播放器，“播放器”只是针对于可以播放图片、视频及音频等文件的软件（或软件内置功能模块）的称呼</p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">文件的分级管理</h3>
+						<p>无论是手机还是电脑，其内的文件通常都不是全部堆在一起的。如果沿用上文“硬盘分区”中的例子，将分区比喻为一栋房子中的多个房间，那么每个房间里可能还放置了多个柜子（分区里可能有多个文件夹），柜子可能分为不同区域（文件夹内还可能有多个文件夹），每个区域内还可能放了不同盒子（可能还有第三级文件夹）……（注意我的用词都是“可能”，不代表不能直接将文件放在某个硬盘分区内）一个应用软件通常就是在一个总文件夹下来分级存放不同的文件</p>
+						<br>
+						<p>手机/电脑就是用这种层层嵌套的方式来存放文件的，其道理也很容易想到，便于人自己管理嘛，把文件全堆在一起看得眼花缭乱的，分类一下就好找多了，也非常建议你养成这种分级管理的习惯</p>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">快捷方式</h3>
+						<p>手机桌面上有许多的应用图标，它们并不是应用本身，而是一个指向应用文件的快捷方式</p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+					
+					<div class="term-card">
+						<h3 class="term-title">VPN</h3>
+						<p></p>
+						<ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			<div class="tab-content" id="recommended-laptops">
+				<div class="magazine-section">
+                </div>
+			</div>
+			
+            <div class="tab-content" id="common-questions">
+				<div class="magazine-section">
+                    <div class="question-card">
+                        <div class="question-title">在哪里调节屏幕亮度与音量？</div>
+                        <i class="fas fa-chevron-right dropdown-icon"></i>
+                        <div class="answer-container">
+                            <div class="answer-content">
+                                <ul style="margin-left: 20px; margin-top: 10px;">
+        							<li>亮度：寻找笔记本键盘上F1-F12中带有小太阳图标的F*按键，按下组合键Fn+该F*按键即可调节</li>
+        							<li>音量：电脑屏幕右下角，时间左边有一个长这样的图标：<i class="fas fa-volume-up"></i>，鼠标左键该图标，随后跳出音量调节框，拉动调节框即可</li>
+        						</ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-title">该如何下载软件？</div>
+                        <i class="fas fa-chevron-right dropdown-icon"></i>
+                        <div class="answer-container">
+                            <div class="answer-content">
+                                打开edge浏览器（Microsoft Edge），搜索你需要下载的软件名称，会有很多搜索结果，请仔细甄别那些搜索结果是该软件的官网还是某某下载站，注意使用官网进行下载，不要在来路不明的下载站下载软件，如果你不会调整，那么里面的捆绑软件会把你的电脑整得乱七八糟
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-title">该如何卸载软件？</div>
+                        <i class="fas fa-chevron-right dropdown-icon"></i>
+                        <div class="answer-container">
+                            <div class="answer-content">
+                                打开geek（我会给你这个软件），搜索要卸载的应用，点击卸载即可。如果geek里面没有找到，则右键应用图标（快捷方式），点击“打开文件所在的位置”，此时跳出文件资源管理器，里面一般能找到某个名字里带“uninstall”的文件，双击这个文件并进行后续操作即可。如果还是没有，请来找我
+                            </div>
+                        </div>
+                    </div>
+		    	</div>
+	    	</div>
+    	</div>
+    
+    <script>
+        function initAnimation(trackId, fps) {
+            const track = document.getElementById(trackId);
+            const dot = track.querySelector('.dot');
+            const trackWidth = track.offsetWidth - 10;
+            
+
+            const totalTime = 1200;
+            const interval = 1000 / fps;
+            const step = trackWidth / (totalTime / interval); 
+			
+            // 动画控制变量
+            let startTime = null;
+            let requestId = null;
+
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const currentFrame = Math.floor(elapsed / interval);
+                const position = currentFrame * step;
+                dot.style.transform = `translateX(${position}px)`;
+
+                // 达到总时间时重置
+                if (elapsed >= totalTime) {
+                    cancelAnimationFrame(requestId);
+                    dot.style.transform = 'translateX(0)'; 
+                    setTimeout(() => {
+                        startTime = null; 
+                        requestId = requestAnimationFrame(animate);
+                    }); 
+                } else {
+                    requestId = requestAnimationFrame(animate);
+                }
+            }
+
+            // 启动
+            requestId = requestAnimationFrame(animate);
+        }
+
+        /* 初始化所有动画*/
+        window.addEventListener('DOMContentLoaded', () => {
+            const configs = [
+                { id: 'track15', fps: 15 },
+                { id: 'track30', fps: 30 },
+                { id: 'track60', fps: 60 }
+            ];
+            configs.forEach(config => {
+                initAnimation(config.id, config.fps);
+            });
+        });
+
+        /* 窗口大小改变时重置动画 */
+		let resizeTimer;
+		window.addEventListener('resize', () => {
+			// 清除已有计时器
+			clearTimeout(resizeTimer);
+			
+			// 设置防抖延迟（300毫秒后执行）
+			resizeTimer = setTimeout(() => {
+				// 先停止所有动画
+				configs.forEach(config => {
+					const track = document.getElementById(config.id);
+					const dot = track.querySelector('.dot');
+					cancelAnimationFrame(dot.requestId);
+				});
+
+				// 重新初始化动画
+				configs.forEach(config => {
+					initAnimation(config.id, config.fps);
+				});
+			}, 300); // 调整这个延迟时间控制响应速度
+		});
+		
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有active类
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加active类到当前标签和对应内容
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 返回顶部按钮
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 图片懒加载
+        document.addEventListener('DOMContentLoaded', function() {
+            const lazyImages = document.querySelectorAll('.image-placeholder img');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.getAttribute('data-src') || img.src;
+                        img.onload = () => {
+                            img.parentElement.style.background = 'none';
+                        };
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        });
+		
+		document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 创建指示器
+            const tabIndicator = document.createElement('div');
+            tabIndicator.className = 'tab-indicator';
+            document.querySelector('.tabs').appendChild(tabIndicator);
+            
+            // 设置指示器位置函数
+            function setIndicatorPosition(tab) {
+                if (!tab) return;
+                const { offsetLeft, offsetWidth } = tab;
+                tabIndicator.style.left = `${offsetLeft}px`;
+                tabIndicator.style.width = `${offsetWidth}px`;
+            }
+            
+            // 激活标签函数
+            function activateTab(tab) {
+                // 移除所有active类
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.question-card.expanded').forEach(openCard => {
+                    openCard.classList.remove('expanded');
+                });
+                
+                // 添加active类
+                tab.classList.add('active');
+                const tabId = tab.dataset.tab;
+                if (tabId) {
+                    const content = document.getElementById(tabId);
+                    if (content) content.classList.add('active');
+                }
+                
+                // 更新指示器
+                setIndicatorPosition(tab);
+            }
+            
+            // 初始化
+            const defaultTab = document.querySelector('.tab.active') || tabs[0];
+            if (defaultTab) {
+                activateTab(defaultTab);
+            }
+            
+            // 绑定事件
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    activateTab(this);
+                });
+            });
+            
+            // 窗口大小变化时重新定位指示器
+            window.addEventListener('resize', function() {
+                const activeTab = document.querySelector('.tab.active');
+                setIndicatorPosition(activeTab);
+            });
+        });
+		
+		// 改进的滚动动画逻辑
+		document.addEventListener('DOMContentLoaded', function() {
+			const animatedElements = document.querySelectorAll('.component-card, .term-card');
+			let lastScrollPos = window.pageYOffset;
+			let ticking = false;
+			
+			// 为所有元素添加初始类
+			animatedElements.forEach(el => {
+				el.classList.add('scroll-animate');
+			});
+			
+			// 视口检查函数
+			function checkElements(scrollDown) {
+				const windowHeight = window.innerHeight;
+				const triggerOffset = windowHeight * 0.2; // 提前触发点
+				
+				animatedElements.forEach(el => {
+					const rect = el.getBoundingClientRect();
+					const elementTop = rect.top;
+					const elementBottom = rect.bottom;
+					
+					// 元素进入视口
+					if (elementTop < windowHeight - triggerOffset && elementBottom > triggerOffset) {
+						el.classList.add('in-view');
+						el.classList.remove('out-view');
+					}
+					// 向上滚动时隐藏下方元素
+					else if (!scrollDown && elementTop > windowHeight) {
+						if (el.classList.contains('in-view')) {
+							el.classList.remove('in-view');
+							el.classList.add('out-view');
+						}
+					}
+				});
+			}
+			
+			// 滚动事件处理
+			window.addEventListener('scroll', function() {
+				const currentScrollPos = window.pageYOffset;
+				const scrollDown = currentScrollPos > lastScrollPos;
+				lastScrollPos = currentScrollPos;
+				
+				if (!ticking) {
+					window.requestAnimationFrame(function() {
+						checkElements(scrollDown);
+						ticking = false;
+					});
+					ticking = true;
+				}
+			}, { passive: true });
+			
+			// 初始检查
+			checkElements(true);
+			
+			// 确保所有在视口内的元素初始可见
+			setTimeout(() => {
+				const initialViewElements = document.querySelectorAll('.scroll-animate');
+				initialViewElements.forEach(el => {
+					const rect = el.getBoundingClientRect();
+					if (rect.top < window.innerHeight && rect.bottom > 0) {
+						el.classList.add('in-view');
+					}
+				});
+			}, 100);
+		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			const splashScreen = document.getElementById('splash-screen');
+			const splashContent = document.getElementById('splash-content');
+			const receiveBtn = document.getElementById('receive-btn');
+			const mainHeader = document.getElementById('mainHeader');
+			const mainContent = document.getElementById('mainContent');
+			const body = document.body;
+			
+			// 粒子系统
+			const canvas = document.getElementById('particles-canvas');
+			const ctx = canvas.getContext('2d');
+			let particles = [];
+			let particleCount = window.innerWidth < 768 ? 40 : 80;
+			let animationId;
+			let isHeaderOnly = false;
+			
+			// 调整canvas大小
+			function resizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = isHeaderOnly ? 125 : window.innerHeight;
+			}
+			
+			// 粒子类
+			class Particle {
+				constructor() {
+					this.x = Math.random() * canvas.width;
+					this.y = isHeaderOnly ? Math.random() * 125 : Math.random() * canvas.height;
+					this.size = Math.random() * 3 + 1;
+					this.speedX = Math.random() * 1 - 0.5;
+					this.speedY = Math.random() * 1 - 0.5;
+					this.color = `rgba(255,255,255,${Math.random() * 0.6 + 0.4})`;
+				}
+				
+				update() {
+					this.x += this.speedX;
+					this.y += this.speedY;
+					
+					// 边界检查
+					if (this.x < 0 || this.x > canvas.width) {
+						this.speedX = -this.speedX;
+					}
+					
+					if (isHeaderOnly) {
+						// header模式下只在顶部100px范围内活动
+						if (this.y < 0 || this.y > 125) {
+							this.speedY = -this.speedY;
+						}
+					} else {
+						if (this.y < 0 || this.y > canvas.height) {
+							this.speedY = -this.speedY;
+						}
+					}
+				}
+				
+				draw() {
+					// header模式下只绘制在顶部区域
+					if (!isHeaderOnly || this.y <= 125) {
+						ctx.fillStyle = this.color;
+						ctx.beginPath();
+						ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+						ctx.fill();
+					}
+				}
+			}
+			
+			// 初始化粒子
+			function initParticles(count) {
+				particles = [];
+				for (let i = 0; i < count; i++) {
+					particles.push(new Particle());
+				}
+			}
+			
+			// 动画循环
+			function animateParticles() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				
+				// 更新和绘制粒子
+				for (let i = 0; i < particles.length; i++) {
+					particles[i].update();
+					particles[i].draw();
+				}
+				
+				// 绘制粒子间的连线
+				for (let i = 0; i < particles.length; i++) {
+					for (let j = i + 1; j < particles.length; j++) {
+						const dx = particles[i].x - particles[j].x;
+						const dy = particles[i].y - particles[j].y;
+						const distance = Math.sqrt(dx * dx + dy * dy);
+						
+						if (distance < 125) {
+							// header模式下只绘制顶部区域的连线
+							if (!isHeaderOnly || (particles[i].y <= 100 && particles[j].y <= 100)) {
+								ctx.strokeStyle = `rgba(255,255,255,${1 - distance/100})`;
+								ctx.lineWidth = 0.5;
+								ctx.beginPath();
+								ctx.moveTo(particles[i].x, particles[i].y);
+								ctx.lineTo(particles[j].x, particles[j].y);
+								ctx.stroke();
+							}
+						}
+					}
+				}
+				
+				animationId = requestAnimationFrame(animateParticles);
+			}
+			
+			// 初始化
+			resizeCanvas();
+			initParticles(particleCount);
+			animateParticles();
+			
+			// 窗口大小改变时重置
+			window.addEventListener('resize', function() {
+				resizeCanvas();
+				initParticles(particleCount);
+			});
+
+			// 点击接收按钮
+			document.getElementById('receive-btn').addEventListener('click', function() {
+				// 切换到header-only模式
+				isHeaderOnly = true;
+				canvas.classList.add('particles-header-only');
+				resizeCanvas();
+				
+				// 重新初始化粒子，集中在header区域
+				particleCount = window.innerWidth < 768 ? 15 : 50; // 减少粒子数量以适应小区域
+				initParticles(particleCount);
+			});
+			
+			// 预先准备header内容
+			const headerContent = document.createElement('div');
+			headerContent.innerHTML = `
+				<h1 style="margin-bottom: 10px">Laptop</h1>
+				<div class="subtitle">李均劭 赠 冉龙雨</div>
+			`;
+			headerContent.style.textAlign = 'center';
+			headerContent.style.width = '100%';
+			mainHeader.appendChild(headerContent);
+
+			// 点击接收按钮
+			receiveBtn.addEventListener('click', function() {
+				// 立即隐藏按钮
+				this.style.display = 'none';
+				
+				// 1. 显示header内容
+				headerContent.style.opacity = '1';
+				mainHeader.style.opacity = '1';
+				
+				// 2. 背景动画
+				splashScreen.style.transition = 'all 1.2s ease';
+				splashScreen.style.height = mainHeader.offsetHeight + 'px';
+				splashScreen.style.borderRadius = '0 0 15px 15px';
+				
+				// 3. 主内容渐入动画
+				setTimeout(() => {
+					mainContent.style.transition = 'opacity 2.0s ease, transform 0.8s ease';
+					mainContent.style.opacity = '1';
+					mainContent.style.transform = 'translateY(0)';
+					mainContent.classList.add('visible');
+					body.classList.add('scroll-enabled');
+				}, 300);
+				
+				// 4. 移除splash屏幕
+				setTimeout(() => {
+					window.scrollTo(0, 0);
+				}, 500);
+			});
+    	});
+    		
+        // 常见问题展开/收起功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionCards = document.querySelectorAll('.question-card');
+            
+            questionCards.forEach(card => {
+                const icon = card.querySelector('.dropdown-icon');
+                const answer = card.querySelector('.answer-container');
+                
+                // 点击图标展开/收起
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleCard(card);
+                });
+                
+                // 点击卡片其他地方也展开/收起
+                card.addEventListener('click', function(e) {
+                    // 如果点击的是卡片本身而不是内部元素
+                    e.stopPropagation();
+                    toggleCard(card);
+                });
+            });
+            
+            // 切换卡片状态的函数
+            function toggleCard(card) {
+                const isExpanded = card.classList.contains('expanded');
+                
+                // 关闭所有其他已展开的卡片
+                if (!isExpanded) {
+                    document.querySelectorAll('.question-card.expanded').forEach(openCard => {
+                        if (openCard !== card) {
+                            openCard.classList.remove('expanded');
+                        }
+                    });
+                }
+                
+                // 切换当前卡片状态
+                card.classList.toggle('expanded');
+                
+                // 增强视觉反馈
+                if (card.classList.contains('expanded')) {
+                    card.style.zIndex = '10'; // 展开时提升层级
+                } else {
+                    setTimeout(() => {
+                        card.style.zIndex = ''; // 动画结束后恢复层级
+                    }, 300);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
