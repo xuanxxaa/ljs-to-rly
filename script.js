@@ -475,7 +475,7 @@ async function sendMessage() {
     if (!message) return;
 
     // 替换成你的 Netlify 站点地址
-    const NETLIFY_FUNCTION_URL = "https://your-site-name.netlify.app/api/chat";
+    const NETLIFY_FUNCTION_URL = "https://xuanxxaa.netlify.app/api/chat";
     
     const response = await fetch(NETLIFY_FUNCTION_URL, {
         method: 'POST',
