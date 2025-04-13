@@ -14,7 +14,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
 		body {
@@ -81,6 +80,7 @@
 			max-width: 100%;
             padding: 0 20px;
 			z-index: 0; 
+			font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
 		}
 		
         .container {
@@ -208,6 +208,7 @@
 			z-index: 1000;
 			transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
 			border-radius: 0;
+			font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
 		}
 		
 		#splash-content, #header-content {
