@@ -14,7 +14,6 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
 }
 
 body {
@@ -93,6 +92,7 @@ h1 {
 
 .main-content {
 	margin-top: 150px;
+	padding-bottom: 80px;
 	opacity: 0;
 	transition: opacity 0.3s ease; 
 }
@@ -222,7 +222,7 @@ header.visible {
 	position: relative;
 	z-index: 2;
 	transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
-	color: white; /* 添加白色文字 */
+	color: white;
 }
 
 #receive-btn {
