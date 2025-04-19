@@ -22,9 +22,6 @@ body {
 	line-height: 1.6;
 	padding-bottom: 60px;
 	overflow-x: hidden;
-	background-image: 
-		radial-gradient(circle at 75% 30%, rgba(108, 92, 231, 0.15) 0%, transparent 30%),
-		radial-gradient(circle at 25% 70%, rgba(0, 206, 255, 0.15) 0%, transparent 30%);
 	font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
@@ -53,6 +50,11 @@ body::before {
 h1 {
 	font-size: 2.2rem;
 	margin-bottom: 10px;
+	font-weight: 700;
+}
+
+h2, h3 {
+	font-family: 'Noto Serif SC', serif !important;
 	font-weight: 700;
 }
 
@@ -238,6 +240,7 @@ header.visible {
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif !important;
 }
 
 #receive-btn:active {
@@ -330,10 +333,6 @@ header.visible {
 	border-left: 4px solid var(--primary);
 }
 
-.component-card:active, .term-card:active {
-	transform: scale(0.98) !important;
-}
-
 .component-title {
 	font-size: 1.2rem;
 	color: var(--secondary);
@@ -410,7 +409,7 @@ header.visible {
 }
 
 .question-card.expanded .answer-container {
-	max-height: 500px;
+	max-height: 5000px;
 }
 
 /* tab */
@@ -460,6 +459,129 @@ header.visible {
 	opacity: 1;
 	height: auto;
 	overflow: visible;
+}
+
+.category-tabs {
+    display: flex;
+    background: #f0f0f3;
+    border-radius: 50px;
+    padding: 4px;
+    margin: 20px auto;
+}
+
+.category-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.category-tab.active {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 77, 109, 0.3);
+}
+
+.category-content {
+    display: none;
+}
+
+.category-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 笔记本显示 */
+.laptop-card {
+	background: white;
+	border-radius: 15px;
+	overflow: hidden;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+	transition: transform 0.3s;
+}
+
+.laptop-image {
+	width: 100%;
+	height: 180px;
+	object-fit: cover;
+}
+
+.laptop-info {
+	padding: 20px;
+}
+
+.laptop-name {
+	font-size: 1.3rem;
+	color: var(--dark);
+	margin-bottom: 10px;
+	font-weight: 600;
+}
+
+.laptop-specs {
+	margin-bottom: 15px;
+	color: #666;
+}
+
+.spec-item {
+	margin-bottom: 5px;
+	display: flex;
+	align-items: center;
+}
+
+.spec-icon {
+	margin-right: 8px;
+	color: var(--info);
+	width: 20px;
+	text-align: center;
+}
+
+.price-tag {
+	background: var(--primary);
+	color: white;
+	padding: 5px 10px;
+	border-radius: 20px;
+	font-weight: 600;
+	display: inline-block;
+}
+
+/* 应用列表 */
+.app-item {
+	display: flex;
+	align-items: center;
+	margin: 5px 0;
+	padding: 10px;
+	background-color: #ffffff;
+	border-radius: 5px;
+}
+
+.app-name {
+	flex-grow: 1;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.download-btn {
+	padding: 6px 12px;
+	background-color: #4CAF50;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+	background-color: #45a049;
 }
 
 /* 动效 */

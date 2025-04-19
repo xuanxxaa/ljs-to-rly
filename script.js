@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 	
-/* 容器折叠 */
+/* 问题容器折叠 */
 document.addEventListener('DOMContentLoaded', function() {
 	const questionCards = document.querySelectorAll('.question-card');
 
@@ -407,13 +407,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	questionCards.forEach(card => {
 		const icon = card.querySelector('.dropdown-icon');
-		icon.addEventListener('click', (e) => {
-			e.stopPropagation();
-			toggleCard(card);
-		});
-		card.addEventListener('click', (e) => {
-			e.stopPropagation();
-			toggleCard(card);
-		});
+		const downloadBtns = card.querySelectorAll('.download-btn');
+        
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleCard(card);
+        });
+        
+        downloadBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                return true;
+            });
+        });
+        
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('.download-btn')) {
+                toggleCard(card);
+            }
+        });
 	});
+});
+
+// 笔记本分类切换
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.category-content').forEach(c => c.classList.remove('active'));
+            
+            this.classList.add('active');
+            const categoryId = this.getAttribute('data-category');
+            const activeContent = document.getElementById(categoryId);
+            activeContent.classList.add('active');
+            
+            setTimeout(() => {
+                const cards = activeContent.querySelectorAll('.component-card');
+                cards.forEach(card => {
+                    card.classList.add('in-view');
+                    card.classList.remove('scroll-animate', 'out-view');
+                });
+            }, 10);
+        });
+    });
+    
+    const initialTab = document.querySelector('.category-tab.active');
+    if (initialTab) {
+        const initialCategory = document.getElementById(initialTab.getAttribute('data-category'));
+        if (initialCategory) {
+            setTimeout(() => {
+                const cards = initialCategory.querySelectorAll('.component-card');
+                cards.forEach(card => {
+                    card.classList.add('in-view');
+                    card.classList.remove('scroll-animate', 'out-view');
+                });
+            }, 100);
+        }
+    }
 });
