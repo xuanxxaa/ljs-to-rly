@@ -568,6 +568,7 @@ header.visible {
 	flex-grow: 1;
 	font-weight: bold;
 	font-size: 16px;
+	overflow: hidden;
 }
 
 .download-btn {
@@ -578,12 +579,28 @@ header.visible {
 	border-radius: 4px;
 	font-size: 14px;
 	transition: background-color 0.3s;
+	white-space: nowrap;
+}
+
+.pan-download-btn {
+	padding: 6px 12px;
+	background-color: #4285f4;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: background-color 0.3s;
+	white-space: nowrap;
 }
 
 .download-btn:hover {
 	background-color: #45a049;
 }
 
+.pan-download-btn:hover {
+	background-color: #3367d6;
+	transform: translateY(-2px);
+}
 /* 动效 */
 #particles-canvas {
 	position: absolute;
