@@ -547,7 +547,6 @@ header.visible {
 .image-section {
 	flex: 4;
 	position: relative;
-	background: #f9f9f9;
 	border-radius: 8px;
 	overflow: hidden;
 	margin-bottom: 15px;
@@ -564,7 +563,7 @@ header.visible {
 	width: 100%;
 	height: auto;
 	display: block;
-	object-fit: contain;
+	object-fit: fill;
 }
 
 .text-section {
@@ -575,6 +574,7 @@ header.visible {
 	font-size: 1.5rem;
 	font-weight: 600;
 	color: #333;
+	margin-top: 22px;
 	margin-bottom: 12px;
 	line-height: 1.3;
 }
