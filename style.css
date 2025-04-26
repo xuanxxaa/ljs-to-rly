@@ -54,6 +54,7 @@ h1 {
 }
 
 h2, h3 {
+	font-size: 2.2rem;
 	font-family: 'Noto Serif SC', serif !important;
 	font-weight: 700;
 }
@@ -502,57 +503,238 @@ header.visible {
 
 /* 笔记本显示 */
 .laptop-card {
-	background: white;
-	border-radius: 15px;
-	overflow: hidden;
-	margin-bottom: 20px;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-	transition: transform 0.3s;
-}
-
-.laptop-image {
-	width: 100%;
-	height: 180px;
-	object-fit: cover;
-}
-
-.laptop-info {
-	padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 15px;
 }
 
 .laptop-name {
-	font-size: 1.3rem;
-	color: var(--dark);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.laptop-main-content {
+    display: flex;
+}
+
+.laptop-left-section {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.laptop-image-container {
+    height: 30%;
+    margin-bottom: 15px;
+}
+
+.laptop-main-image {
+    width: 100%;
+    height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    background: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.laptop-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.laptop-price {
+    text-align: center;
+	display: flex;
+}
+
+.original-price {
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: line-through;
+	margin: 20px;
+}
+
+.discount-price {
+    font-size: 1rem;
+    color: #f56c6c;
+    margin: 20px;
+}
+
+.final-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #f56c6c;
+	margin: 20px;
+}
+
+.laptop-evaluation {
+    height: 30%;
+    display: flex;
+}
+
+#radar1 {
+    width: 44%;
+	min-height: 200px;
+    display: inline-block;
+    align-items: center;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.purpose-pro-con {
+	width: 50%;
+	margin-left: 50px;
+	display: flex;
+	flex-direction: column;
+}
+
+.purpose {
+	text-align: center;
+	height: 30%;
 	margin-bottom: 10px;
+	background-color: rgba(145, 56, 173, 0.08);
+	border-radius: 6px;
+}
+
+.purpose-title{
+	margin-top: 10px;
+	margin-bottom: 1px;
+	color: var(--primary);
+	font-size: 1.2rem;
 	font-weight: 600;
 }
 
-.laptop-specs {
-	margin-bottom: 15px;
-	color: #666;
+.purpose-text{
+	font-size: 1rem;
+	margin-bottom: 24px;
 }
 
-.spec-item {
-	margin-bottom: 5px;
-	display: flex;
-	align-items: center;
+.pro-con {
+	display:flex;
+	height: 70%;
 }
 
-.spec-icon {
-	margin-right: 8px;
-	color: var(--info);
-	width: 20px;
+.pros-section, .cons-section {
+	flex: 1;
+	display: inline;
+	width: 27%;
+    padding: 0;
+	border-radius: 6px;
+}
+
+.pros-section {
+	margin-right: 6px;
+	background-color: rgba(103, 194, 58, 0.08);
+}
+
+.cons-section {
+	margin-left: 6px;
+	background-color: rgba(245, 108, 108, 0.08);
+}
+
+.pros-section ul, .cons-section ul {
+    list-style-type: none;
+	font-size: 1rem;
+    padding-left: 0;
+    margin-top: 5px;
+	margin-left: 10px;
+}
+
+.pros-section li {
+    color: #67c23a;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.pros-section li:before {
+    position: absolute;
+    left: 0;
+    color: #67c23a;
+}
+
+.cons-section li {
+    color: #f56c6c;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.cons-section li:before {
+    position: absolute;
+    left: 0;
+    color: #f56c6c;
+}
+
+.laptop-right-section {
+    width: 30%;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.laptop-spec-section {
+	margin-top: 6px;
+}
+
+.spec-row {
+    display: flex;
+    margin-bottom: 50px;
+    font-size: 1.1rem;
+}
+
+.spec-label {
+    width: 80px;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.spec-value {
+    flex: 1;
+    color: #333;
+}
+
+.laptop-rating-section {
+    margin-top: 15px;
+}
+
+.rating-stars {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.stars {
+    color: #ffb400;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+	margin: 10px;
 	text-align: center;
 }
 
-.price-tag {
-	background: var(--primary);
-	color: white;
-	padding: 5px 10px;
-	border-radius: 20px;
-	font-weight: 600;
-	display: inline-block;
+.game-performance ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
 }
+
+.game-performance li {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 
 /* 应用列表 */
 .app-item {
@@ -599,7 +781,6 @@ header.visible {
 
 .pan-download-btn:hover {
 	background-color: #3367d6;
-	transform: translateY(-2px);
 }
 /* 动效 */
 #particles-canvas {
