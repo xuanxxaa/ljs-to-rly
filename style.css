@@ -614,22 +614,17 @@ header.visible {
 	background-color: #fafafa;
 }
 
-.rating-section {
+.level-section {
 	display: flex;
 	align-items: center;
 	margin-bottom: 15px;
 }
 
-.rating-title {
+.level-text {
+	margin-bottom: 4px;
 	font-size: 0.9rem;
 	color: #666;
 	margin-right: 15px;
-}
-
-.stars {
-	color: #ffb400;
-	font-size: 1.1rem;
-	letter-spacing: 2px;
 }
 
 .pros-cons {
@@ -657,15 +652,6 @@ header.visible {
 
 .cons .section-title {
 	color: #f56c6c;
-}
-
-.section-title:before {
-	content: "";
-	display: inline-block;
-	width: 4px;
-	height: 14px;
-	margin-right: 8px;
-	border-radius: 2px;
 }
 
 .pros .section-title:before {
