@@ -15,6 +15,13 @@
 	box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Noto Serif SC';
+  src: url('fonts/NotoSerifSC-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
 	background: var(--dark);
 	color: var(--dark);
@@ -53,7 +60,7 @@ h1 {
 	font-weight: 700;
 }
 
-h2, h3 {
+h2 {
 	font-size: 1.2rem;
 	font-family: 'Noto Serif SC', serif !important;
 	font-weight: 700;
@@ -751,7 +758,7 @@ header.visible {
 .particles-header-only {
 	position: fixed;
 	top: 0;
-	height: 125px !important; /* 与header高度匹配 */
+	height: 125px !important;
 	overflow: hidden;
 	pointer-events: none;
 }
