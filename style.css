@@ -7,12 +7,6 @@
 	--dark: #212529;
 	--light: #f8f9fa;
 	--accent: #38b000;
-	--info: #00b4d8;
-	--primary-color: #409eff;
-	--warning-color: #e6a23c;
-	--danger-color: #f56c6c;
-	--success-color: #67c23a;
-	--info-color: #909399;
 }
 
 * {
@@ -28,6 +22,7 @@ body {
 	padding-bottom: 60px;
 	overflow-x: hidden;
 	font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+	font-size: 16px;
 }
 
 body {
@@ -59,7 +54,7 @@ h1 {
 }
 
 h2, h3 {
-	font-size: 2.2rem;
+	font-size: 1.2rem;
 	font-family: 'Noto Serif SC', serif !important;
 	font-weight: 700;
 }
@@ -271,7 +266,7 @@ header.visible {
 	padding-top: 10px;
 }
 
-.magazine-section {
+.page {
 	background: #f5f5f7;
 	border-radius: 15px;
 	padding: 25px;
@@ -281,7 +276,7 @@ header.visible {
 	overflow: hidden;
 }
 
-.magazine-section:first-child {
+.page:first-child {
 	margin-top: 0;
 	padding-top: 10px;
 }
@@ -774,8 +769,8 @@ header.visible {
 
 .scroll-animate.out-view {
 	opacity: 0;
-	transform: translateY(-30px);
-	transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+	transform: translateY(30px);
+	transition: opacity 0.6s ease-in, transform 0.6s ease-in;
 }
 
 .FPS-container {
@@ -814,7 +809,7 @@ header.visible {
 		font-size: 1.1rem;
 	}
 	
-	.magazine-section {
+	.page {
 		padding: 20px 15px;
 	}
 }
