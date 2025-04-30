@@ -602,14 +602,13 @@ header.visible {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1px;
+    margin-bottom: 15px;
 }
 
 .price {
 	color: #f56c6c;
 	font-size: 1.3rem;
 	font-weight: bold;
-	margin-bottom: 15px;
 }
 
 .price-reference-btn {
@@ -653,7 +652,7 @@ header.visible {
 
 .spec-label {
 	color: #666;
-	min-width: 80px;
+	min-width: 50px;
 	flex-shrink: 0;
 }
 
