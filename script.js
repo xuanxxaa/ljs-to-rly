@@ -69,7 +69,7 @@ tabs.forEach(tab => {
 	});
 });
 
-// 返回顶部按钮
+/* 返回顶部按钮 */
 const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
 	if (window.pageYOffset > 300) {
@@ -86,7 +86,7 @@ backToTop.addEventListener('click', () => {
 	});
 });
 
-// 图片懒加载
+/* 图片懒加载 */
 document.addEventListener('DOMContentLoaded', function() {
 	const lazyImages = document.querySelectorAll('.image-placeholder img');
 	
@@ -112,12 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	const tabs = document.querySelectorAll('.tab');
 	const tabContents = document.querySelectorAll('.tab-content');
 	
-	// 创建指示器
 	const tabIndicator = document.createElement('div');
 	tabIndicator.className = 'tab-indicator';
 	document.querySelector('.tabs').appendChild(tabIndicator);
 	
-	// 设置指示器位置函数
 	function setIndicatorPosition(tab) {
 		if (!tab) return;
 		const { offsetLeft, offsetWidth } = tab;
@@ -125,16 +123,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		tabIndicator.style.width = `${offsetWidth}px`;
 	}
 	
-	// 激活标签函数
 	function activateTab(tab) {
-		// 移除所有active类
+		
+		//滚动动画初始检查
+		if (typeof checkInitialElements === 'function') {
+			checkInitialElements();
+		}
+		
 		tabs.forEach(t => t.classList.remove('active'));
 		tabContents.forEach(c => c.classList.remove('active'));
 		document.querySelectorAll('.question-card.expanded').forEach(openCard => {
 			openCard.classList.remove('expanded');
 		});
 		
-		// 添加active类
 		tab.classList.add('active');
 		const tabId = tab.dataset.tab;
 		if (tabId) {
@@ -142,17 +143,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (content) content.classList.add('active');
 		}
 		
-		// 更新指示器
 		setIndicatorPosition(tab);
 	}
 	
-	// 初始化
 	const defaultTab = document.querySelector('.tab.active') || tabs[0];
 	if (defaultTab) {
 		activateTab(defaultTab);
 	}
 	
-	// 绑定事件
 	tabs.forEach(tab => {
 		tab.addEventListener('click', function(e) {
 			e.preventDefault();
@@ -160,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 	
-	// 窗口大小变化时重新定位指示器
 	window.addEventListener('resize', function() {
 		const activeTab = document.querySelector('.tab.active');
 		setIndicatorPosition(activeTab);
@@ -169,61 +166,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* 滚动动画 */
 document.addEventListener('DOMContentLoaded', function() {
-	const animatedElements = document.querySelectorAll('.component-card, .term-card');
-	let lastScrollPos = window.pageYOffset;
-	let ticking = false;
-	
-	animatedElements.forEach(el => {
-		el.classList.add('scroll-animate');
-	});
-	
-	function checkElements(scrollDown) {
-		const windowHeight = window.innerHeight;
-		const triggerOffset = windowHeight * 0.2;
-		
-		animatedElements.forEach(el => {
-			const rect = el.getBoundingClientRect();
-			const elementTop = rect.top;
-			const elementBottom = rect.bottom;
-			if (elementTop < windowHeight - triggerOffset && elementBottom > triggerOffset) {
-				el.classList.add('in-view');
-				el.classList.remove('out-view');
-			}
-			else if (!scrollDown && elementTop > windowHeight) {
-				if (el.classList.contains('in-view')) {
-					el.classList.remove('in-view');
-					el.classList.add('out-view');
-				}
-			}
-		});
-	}
-	
-	window.addEventListener('scroll', function() {
-		const currentScrollPos = window.pageYOffset;
-		const scrollDown = currentScrollPos > lastScrollPos;
-		lastScrollPos = currentScrollPos;
-		
-		if (!ticking) {
-			window.requestAnimationFrame(function() {
-				checkElements(scrollDown);
-				ticking = false;
-			});
-			ticking = true;
-		}
-	}, { passive: true });
-	
-	checkElements(true);
-	
-	setTimeout(() => {
-		const initialViewElements = document.querySelectorAll('.scroll-animate');
-		initialViewElements.forEach(el => {
-			const rect = el.getBoundingClientRect();
-			if (rect.top < window.innerHeight && rect.bottom > 0) {
-				el.classList.add('in-view');
-			}
-		});
-	}, 100);
+    const animatedElements = document.querySelectorAll('.component-card, .term-card, .card');
+    let lastScrollPos = window.pageYOffset;
+    let ticking = false;
+    
+    function checkElements(scrollDown) {
+        const windowHeight = window.innerHeight;
+        const triggerOffset = windowHeight * 0.2;
+        
+        animatedElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const elementTop = rect.top;
+            const elementBottom = rect.bottom;
+            
+            if (elementTop < windowHeight - triggerOffset && elementBottom > triggerOffset) {
+                el.classList.add('in-view');
+                el.classList.remove('out-view');
+            }
+            else if (!scrollDown && elementTop > windowHeight) {
+                if (el.classList.contains('in-view')) {
+                    el.classList.remove('in-view');
+                    el.classList.add('out-view');
+                }
+            }
+        });
+    }
+    
+    checkInitialElements();
+    
+    window.addEventListener('scroll', function() {
+        const currentScrollPos = window.pageYOffset;
+        const scrollDown = currentScrollPos > lastScrollPos;
+        lastScrollPos = currentScrollPos;
+        
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                checkElements(scrollDown);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
 });
+
+function checkInitialElements() {
+	const animatedElements = document.querySelectorAll('.component-card, .term-card, .card');
+	const windowHeight = window.innerHeight;
+
+	animatedElements.forEach(el => {
+		const rect = el.getBoundingClientRect();
+		const elementTop = rect.top;
+		const elementBottom = rect.bottom;
+
+		el.classList.add('scroll-animate');
+
+		if (elementBottom > 0 && elementTop < windowHeight) {
+			el.classList.add('in-view');
+		}
+	});
+}
 
 /* 粒子 */
 document.addEventListener('DOMContentLoaded', function() {
@@ -429,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-// 笔记本分类切换
+/* 笔记本分类切换 */
 document.addEventListener('DOMContentLoaded', function() {
     const categoryTabs = document.querySelectorAll('.category-tab');
     
@@ -437,11 +438,16 @@ document.addEventListener('DOMContentLoaded', function() {
         tab.addEventListener('click', function() {
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.category-content').forEach(c => c.classList.remove('active'));
-            
+
             this.classList.add('active');
             const categoryId = this.getAttribute('data-category');
             const activeContent = document.getElementById(categoryId);
             activeContent.classList.add('active');
+			
+			//滚动动画初始检查
+			if (typeof checkInitialElements === 'function') {
+				checkInitialElements();
+			}
             
             setTimeout(() => {
                 const cards = activeContent.querySelectorAll('.component-card');
@@ -468,11 +474,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-//倒计时
+/* 计时 */
 function calculateDays() {
   const startDate = new Date('2024-09-21');
   const currentDate = new Date();
-  const diffTime = currentDate - startDate;
+  const diffTime = currentDate - startDate + 1;
   return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 }
 

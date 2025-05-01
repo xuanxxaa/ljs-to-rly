@@ -331,7 +331,7 @@ header.visible {
     padding: 20px 0;
     font-size: 14px;
     position: relative;
-    z-index: 10;
+    z-index: 1;
 }
 
 .footer-container {
@@ -484,6 +484,12 @@ header.visible {
 	opacity: 1;
 	height: auto;
 	overflow: visible;
+	animation: slideFadeIn 0.4s ease;
+}
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .category-tabs {
@@ -551,7 +557,7 @@ header.visible {
 }
 }
 
-.introducition {
+.introduction {
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
@@ -666,7 +672,7 @@ header.visible {
 	font-weight: 500;
 }
 
-.introducition2 {
+.introduction2 {
 	border-top: 1px solid #eee;
 	padding: 15px 20px;
 	background-color: #fafafa;
