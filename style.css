@@ -96,7 +96,7 @@ h2 {
 .main-content {
 	min-height: 100vh;
 	margin-top: 150px;
-	padding-bottom: 20px;
+	padding-bottom: 12px;
 	opacity: 0;
 	transition: opacity 0.3s ease; 
 }
