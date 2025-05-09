@@ -478,8 +478,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function calculateDays() {
   const startDate = new Date('2024-09-21');
   const currentDate = new Date();
-  const diffTime = currentDate - startDate + 1;
-  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffTime = currentDate - startDate;
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24) + 1);
 }
 
 document.getElementById('daysCounter').textContent = calculateDays();
