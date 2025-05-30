@@ -346,11 +346,24 @@ header.visible {
     margin: 0 auto;
     text-decoration: none;
 	margin-bottom: 10px;
-	background: repeating-linear-gradient(135deg, var(--light-blue), var(--light-purple) 80%);
+	background: linear-gradient(90deg, 
+        var(--light-blue), 
+        var(--light-purple),
+        var(--light-blue));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+	background-size: 200% 100%;
+    animation: gradientMove 6s linear infinite;
 }
 
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
 /* card */
 .component-card {
 	background: #f5f5f7;
